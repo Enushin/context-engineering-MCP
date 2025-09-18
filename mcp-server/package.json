@@ -1,11 +1,13 @@
 {
-  "name": "ai-guides-mcp-server",
-  "version": "1.0.0",
-  "description": "MCP server for AI Guides API with Gemini integration",
-  "main": "index.js",
+  "name": "context-engineering-mcp",
+  "version": "2.0.0",
+  "description": "Context Engineering MCP - Advanced AI-powered context management platform for Claude Desktop/Code",
+  "main": "context_mcp_server.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "node context_mcp_server.js",
+    "test": "node --test",
+    "dev": "node --watch context_mcp_server.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",
@@ -13,5 +15,19 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "keywords": [
+    "mcp",
+    "claude",
+    "context-engineering",
+    "ai",
+    "gemini",
+    "prompt-templates"
+  ],
+  "author": "Context Engineering Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShunsukeHayashi/context_engineering_MCP"
   }
 }

@@ -1,0 +1,122 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "context-engineering-mcp"
+version = "2.0.0"
+description = "Context Engineering MCP - Advanced AI-powered context management for Claude Desktop/Code"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Context Engineering Team"},
+]
+keywords = [
+    "mcp",
+    "claude",
+    "context-engineering",
+    "ai",
+    "gemini",
+    "prompt-templates",
+    "model-context-protocol"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "fastapi>=0.104.1",
+    "uvicorn>=0.24.0",
+    "pydantic>=2.5.0",
+    "google-generativeai>=0.3.0",
+    "httpx>=0.25.0",
+    "python-dotenv>=1.0.0",
+    "aiofiles>=23.2.1",
+    "websockets>=12.0",
+    "jinja2>=3.1.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=0.21.1",
+    "pytest-cov>=4.1.0",
+    "black>=23.11.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Enushin/context-engineering-MCP"
+Documentation = "https://github.com/Enushin/context-engineering-MCP/wiki"
+Repository = "https://github.com/Enushin/context-engineering-MCP"
+Issues = "https://github.com/Enushin/context-engineering-MCP/issues"
+
+[project.scripts]
+context-engineering-mcp = "context_engineering_mcp.cli:main"
+ce-mcp-server = "context_engineering_mcp.mcp_server:start_mcp_server"
+ce-quickstart = "context_engineering_mcp.setup:quickstart"
+
+[tool.hatch.build]
+packages = ["context_engineering_mcp"]
+include = [
+    "main.py",
+    "gemini_service.py",
+    "context_engineering/",
+    "mcp-server/",
+    "examples/",
+    "install.sh",
+    ".env.example",
+]
+exclude = [
+    "workflow_system/",
+    ".serena/",
+    ".specstory/",
+    "**/__pycache__",
+    "**/*.pyc",
+    "**/node_modules",
+    "**/.env",
+    "**/package-lock.json",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["context_engineering_mcp"]
+include = [
+    "context_engineering_mcp",
+    "*.py",
+    "context_engineering/**/*.py",
+    "context_engineering/**/*.txt",
+    "context_engineering/**/*.sh",
+    "mcp-server/**/*.js",
+    "mcp-server/**/*.json",
+    "examples/**/*",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

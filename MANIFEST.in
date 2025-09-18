@@ -1,0 +1,66 @@
+# =========================
+# Core Documentation
+# =========================
+include README.md
+include LICENSE
+include SETUP_GUIDE.md
+include .env.example
+
+# =========================
+# Package Configuration
+# =========================
+include pyproject.toml
+include install.sh
+
+# =========================
+# Python Package Files
+# =========================
+recursive-include context_engineering_mcp *.py
+
+# =========================
+# MCP Server Implementation
+# =========================
+recursive-include mcp-server *.js *.json *.md
+exclude mcp-server/node_modules
+exclude mcp-server/package-lock.json
+
+# =========================
+# Context Engineering Core
+# =========================
+recursive-include context_engineering *.py *.txt *.sh
+exclude context_engineering/__pycache__
+exclude context_engineering/sessions
+exclude context_engineering/exports
+exclude context_engineering/*_env
+
+# =========================
+# Core API Modules
+# =========================
+include main.py
+include gemini_service.py
+
+# =========================
+# Examples & Documentation
+# =========================
+recursive-include examples *.py *.md
+
+# =========================
+# Global Exclusions
+# =========================
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store
+global-exclude *.log
+global-exclude *.tmp
+global-exclude *.bak
+global-exclude .env
+global-exclude .git*
+
+# =========================
+# Development Directories (exclude)
+# =========================
+prune workflow_system
+prune .serena
+prune .specstory
+prune tests
+prune logs

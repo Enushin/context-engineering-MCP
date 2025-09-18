@@ -1,8 +1,14 @@
-# Environment variables
+# =========================
+# Environment & Credentials
+# =========================
 .env
+.env.*
 *.env
+!.env.example
 
+# =========================
 # Python
+# =========================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -20,51 +26,118 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
+pip-wheel-metadata/
+share/python-wheels/
 
 # Virtual environments
 venv/
 .venv/
 env/
 ENV/
+*_env/
+virtualenv/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
+# =========================
 # Node.js
+# =========================
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+package-lock.json
+mcp-server/node_modules/
+mcp-server/package-lock.json
 
-# Logs
-*.log
-server.log
+# =========================
+# IDE & Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cursorindexingignore
 
-# OS
+# =========================
+# OS Files
+# =========================
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Temporary files
+# =========================
+# Development & Testing
+# =========================
+# Development scripts
+test-mcp.sh
+update_github_repo.sh
+quickstart.sh
+
+# Test and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+.tox/
+
+# =========================
+# Local Development
+# =========================
+# Workflow system (local development only)
+workflow_system/
+
+# Serena MCP
+.serena/
+.specstory/
+
+# Context Engineering runtime
+context_engineering/sessions/
+context_engineering/exports/
+context_engineering/templates/*.tmp
+context_engineering/*_env/
+
+# =========================
+# Logs & Temporary Files
+# =========================
+*.log
+logs/
+*.pid
+nohup.out
 *.tmp
 *.temp
+*.cache
 
+# =========================
 # Database
+# =========================
 *.db
 *.sqlite3
+*.sqlite
 
-# API Keys and sensitive data
+# =========================
+# API Keys and Sensitive Data
+# =========================
 *api_key*
 *secret*
 *token*
+!**/template_manager.py  # Exception for file name
 
-# MCP Server specific
-mcp-server/node_modules/
+# =========================
+# Documentation (local only)
+# =========================
+CONTRIBUTING.md
+QUICK_START.md
+
+# =========================
+# Backup & Recovery
+# =========================
+*.bak
+*.backup
+*.orig
