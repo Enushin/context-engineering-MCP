@@ -5,14 +5,16 @@
 echo "🚀 Context Engineering MCP Platform を起動しています..."
 
 # 環境変数の設定
-# GEMINI_API_KEYを.envファイルから読み込み
-if [ -f .env ]; then
+# GEMINI_API_KEYを.env.localまたは.envファイルから読み込み
+if [ -f .env.local ]; then
+    export $(cat .env.local | grep -v '^#' | xargs)
+elif [ -f .env ]; then
     export $(cat .env | grep -v '^#' | xargs)
 fi
 
 if [ -z "$GEMINI_API_KEY" ]; then
     echo "❌ エラー: GEMINI_API_KEYが設定されていません"
-    echo "📝 .envファイルを作成して以下を追加してください:"
+    echo "📝 .env.localまたは.envファイルを作成して以下を追加してください:"
     echo "   GEMINI_API_KEY=your-api-key-here"
     exit 1
 fi

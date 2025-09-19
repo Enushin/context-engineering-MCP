@@ -2,6 +2,8 @@
 
 > 他のプロジェクトにインストール可能なMCPパッケージ - Claude Desktop/Code統合対応
 
+日本語 | [English](README_EN.md)
+
 ## 概要
 
 Context Engineering MCPは、AIコンテキスト管理を革新する包括的なMCPパッケージです。任意のプロジェクトにインストールして、高度なコンテキスト管理機能を追加できます。
