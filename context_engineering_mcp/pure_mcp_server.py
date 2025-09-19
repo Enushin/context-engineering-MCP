@@ -367,6 +367,16 @@ class PurePythonMCPServer:
         """Main run loop for stdio communication"""
         logger.info("Starting Pure Python MCP Server (stdio mode)")
 
+        # Ensure proper buffering for MCP communication
+        # Don't reconfigure if not supported (older Python versions)
+        try:
+            if hasattr(sys.stdout, 'reconfigure'):
+                sys.stdout.reconfigure(line_buffering=False)
+            if hasattr(sys.stderr, 'reconfigure'):
+                sys.stderr.reconfigure(line_buffering=True)
+        except Exception as e:
+            logger.warning(f"Could not reconfigure streams: {e}")
+
         try:
             while True:
                 # Read from stdin (line by line)
@@ -424,8 +434,12 @@ class PurePythonMCPServer:
 
 def main():
     """Main entry point"""
-    server = PurePythonMCPServer()
-    server.run()
+    try:
+        server = PurePythonMCPServer()
+        server.run()
+    except Exception as e:
+        logger.error(f"Fatal error: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

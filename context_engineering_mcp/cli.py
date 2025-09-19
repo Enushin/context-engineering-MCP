@@ -114,9 +114,11 @@ def start_mcp_server(project_path: Optional[str] = None, port: Optional[int] = N
     # Import and run the pure Python MCP server
     try:
         from .pure_mcp_server import PurePythonMCPServer
+        logger.info("Pure Python MCP Server imported successfully")
 
         # Create and run the server
         server = PurePythonMCPServer()
+        logger.info("Starting MCP server in stdio mode...")
         server.run()
 
     except KeyboardInterrupt:
@@ -125,9 +127,13 @@ def start_mcp_server(project_path: Optional[str] = None, port: Optional[int] = N
     except ImportError as e:
         logger.error(f"Failed to import Pure Python MCP server: {e}")
         logger.error("Please ensure the package is properly installed")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
     except Exception as e:
         logger.error(f"Failed to start MCP server: {e}")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
 
 def setup_services(install_deps: bool = True) -> None:
