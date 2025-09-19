@@ -65,7 +65,8 @@ Issues = "https://github.com/Enushin/context-engineering-MCP/issues"
 
 [project.scripts]
 context-engineering-mcp = "context_engineering_mcp.cli:main"
-ce-mcp-server = "context_engineering_mcp.mcp_server:start_mcp_server"
+ce-mcp-server = "context_engineering_mcp.pure_mcp_server:main"
+ce-pure-mcp = "context_engineering_mcp.pure_mcp_server:main"
 ce-quickstart = "context_engineering_mcp.setup:quickstart"
 
 [tool.hatch.build]

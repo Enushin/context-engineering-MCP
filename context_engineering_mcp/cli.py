@@ -46,11 +46,11 @@ def find_mcp_server() -> Optional[Path]:
 
 def start_mcp_server(project_path: Optional[str] = None, port: Optional[int] = None) -> None:
     """
-    Start the Context Engineering MCP server
+    Start the Context Engineering MCP server (Pure Python version)
 
     Args:
         project_path: Path to the project directory (defaults to current directory)
-        port: Port for the API servers (defaults to environment variable or 9001)
+        port: Port for the API servers (not used in pure Python version)
     """
     # Set project path
     if project_path:
@@ -79,38 +79,8 @@ def start_mcp_server(project_path: Optional[str] = None, port: Optional[int] = N
         except ImportError:
             logger.warning("python-dotenv not installed, loading env manually")
 
-    # Find MCP server file
-    mcp_server_path = find_mcp_server()
-    if not mcp_server_path:
-        logger.error("MCP server file not found. Please ensure the package is properly installed.")
-
-        # Try to install npm dependencies if package structure exists
-        mcp_server_dir = get_package_root() / "mcp-server"
-        if mcp_server_dir.exists():
-            logger.info("Attempting to install Node.js dependencies...")
-            try:
-                subprocess.run(
-                    ["npm", "install"],
-                    cwd=str(mcp_server_dir),
-                    check=True,
-                    capture_output=True
-                )
-                # Try finding the server again
-                mcp_server_path = find_mcp_server()
-                if mcp_server_path:
-                    logger.info("Dependencies installed successfully!")
-                else:
-                    logger.error("Dependencies installed but server file still not found")
-                    sys.exit(1)
-            except subprocess.CalledProcessError as e:
-                logger.error(f"Failed to install npm dependencies: {e}")
-                logger.info(f"Try manually running: cd {mcp_server_dir} && npm install")
-                sys.exit(1)
-            except FileNotFoundError:
-                logger.error("npm not found. Please install Node.js and npm first.")
-                sys.exit(1)
-        else:
-            sys.exit(1)
+    # Use Pure Python MCP Server (no Node.js required)
+    logger.info("Starting Pure Python MCP Server (no Node.js dependencies)")
 
     # Set environment variables
     env = os.environ.copy()
@@ -141,26 +111,21 @@ def start_mcp_server(project_path: Optional[str] = None, port: Optional[int] = N
             logger.warning("GEMINI_API_KEY not found. Create a .env.local file with GEMINI_API_KEY=your-key")
             logger.warning("Some features may be limited without the API key.")
 
-    # Start Node.js MCP server
-    logger.info(f"Launching MCP server from: {mcp_server_path}")
-
+    # Import and run the pure Python MCP server
     try:
-        # Start the MCP server process
-        process = subprocess.Popen(
-            ["node", str(mcp_server_path)],
-            env=env,
-            stdout=sys.stdout,
-            stderr=sys.stderr,
-            stdin=sys.stdin
-        )
+        from .pure_mcp_server import PurePythonMCPServer
 
-        # Wait for the process
-        process.wait()
+        # Create and run the server
+        server = PurePythonMCPServer()
+        server.run()
 
     except KeyboardInterrupt:
         logger.info("MCP server stopped by user")
-        process.terminate()
         sys.exit(0)
+    except ImportError as e:
+        logger.error(f"Failed to import Pure Python MCP server: {e}")
+        logger.error("Please ensure the package is properly installed")
+        sys.exit(1)
     except Exception as e:
         logger.error(f"Failed to start MCP server: {e}")
         sys.exit(1)
