@@ -21,7 +21,7 @@ fi
 
 # AI Guides APIサーバーの起動
 echo "📚 AI Guides API サーバーを起動中..."
-cd /Users/Work/MCP/context_engineering_MCP
+cd "$(dirname "$0")"
 python -m uvicorn main:app --host 0.0.0.0 --port 8888 --reload > /tmp/ai_guides_api.log 2>&1 &
 AI_GUIDES_PID=$!
 echo "   PID: $AI_GUIDES_PID"
@@ -31,7 +31,7 @@ sleep 3
 
 # Context Engineering APIサーバーの起動
 echo "🔧 Context Engineering API サーバーを起動中..."
-cd /Users/Work/MCP/context_engineering_MCP/context_engineering
+cd "$(dirname "$0")/context_engineering"
 python context_api.py > /tmp/context_engineering_api.log 2>&1 &
 CONTEXT_PID=$!
 echo "   PID: $CONTEXT_PID"

@@ -98,6 +98,10 @@ workflow_system/
 .serena/
 .specstory/
 
+# Local documentation
+CLAUDE.md
+SETUP_GUIDE.md
+
 # Context Engineering runtime
 context_engineering/sessions/
 context_engineering/exports/

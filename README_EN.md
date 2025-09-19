@@ -222,6 +222,10 @@ node --version  # Check for v18.0.0 or higher
 context-engineering-mcp start-mcp-server --port 9002
 ```
 
+## Security
+
+If you discover a vulnerability, please report it to [Issues](https://github.com/Enushin/context-engineering-MCP/issues) with "SECURITY:" prefix.
+
 ## License
 
 MIT License

@@ -222,6 +222,10 @@ node --version  # v18.0.0以上を確認
 context-engineering-mcp start-mcp-server --port 9002
 ```
 
+## セキュリティ
+
+脆弱性を発見した場合は、[Issues](https://github.com/Enushin/context-engineering-MCP/issues)に「SECURITY:」プレフィックスを付けて報告してください。
+
 ## ライセンス
 
 MIT License
