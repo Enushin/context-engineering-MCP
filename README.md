@@ -224,9 +224,14 @@ context-engineering-mcp start-mcp-server --port 9002
 
 MIT License
 
+## 謝辞
+
+このプロジェクトは [ShunsukeHayashi/context_engineering_MCP](https://github.com/ShunsukeHayashi/context_engineering_MCP) を参考に作成されました。
+オリジナルプロジェクトの素晴らしいアーキテクチャとコンセプトに感謝いたします。
+
 ## コントリビューション
 
-プライベートリポジトリですが、チームメンバーからのPRは歓迎です。
+プルリクエストを歓迎します。大きな変更の場合は、まずissueを開いて変更内容について議論してください。
 
 ## サポート
 
