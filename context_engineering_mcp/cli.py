@@ -111,10 +111,16 @@ def start_mcp_server(project_path: Optional[str] = None, port: Optional[int] = N
             logger.warning("GEMINI_API_KEY not found. Create a .env.local file with GEMINI_API_KEY=your-key")
             logger.warning("Some features may be limited without the API key.")
 
-    # Import and run the pure Python MCP server
+    # Import and run the pure Python MCP server (V2 with fixed stdio)
     try:
-        from .pure_mcp_server import PurePythonMCPServer
-        logger.info("Pure Python MCP Server imported successfully")
+        # Try V2 first (with proper stdio handling)
+        try:
+            from .pure_mcp_server_v2 import PurePythonMCPServer
+            logger.info("Pure Python MCP Server V2 imported successfully")
+        except ImportError:
+            # Fallback to original
+            from .pure_mcp_server import PurePythonMCPServer
+            logger.info("Pure Python MCP Server imported successfully")
 
         # Create and run the server
         server = PurePythonMCPServer()
