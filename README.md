@@ -8,11 +8,13 @@
 
 Context Engineering MCPは、AIコンテキスト管理を革新する包括的なMCPパッケージです。任意のプロジェクトにインストールして、高度なコンテキスト管理機能を追加できます。
 
+**🎆 v2.0 - 純Python実装（Node.js不要）**
+
 ### 主要機能
 
-- **15のMCPツール**: AIガイド管理、コンテキスト最適化、テンプレート管理
-- **Gemini 2.0 Flash統合**: セマンティック検索と分析
-- **52%のトークン削減**: AI駆動の最適化
+- **6のコアMCPツール**: コンテキスト管理、テンプレート管理
+- **純Python実装**: Node.js/npm不要で安定動作
+- **スタンドアロン動作**: 外部API依存なし
 - **プロジェクト独立**: 任意のプロジェクトで利用可能
 
 ## インストール
@@ -64,14 +66,13 @@ claude mcp add context-eng -- uvx --from git+https://github.com/Enushin/context-
         "start-mcp-server",
         "--project",
         "${PROJECT_PATH}"
-      ],
-      "env": {
-        "GEMINI_API_KEY": "${GEMINI_API_KEY}"
-      }
+      ]
     }
   }
 }
 ```
+
+**注意**: GEMINI_API_KEYはオプション（一部機能に必要）
 
 ## 使い方
 
@@ -119,26 +120,15 @@ context-engineering-mcp config --output claude_config.json
 
 ## MCP ツール一覧
 
-### AIガイド管理（4ツール）
-- `list_ai_guides` - ガイド一覧取得
-- `search_ai_guides` - キーワード検索
-- `search_guides_with_gemini` - AI検索
-- `analyze_guide` - ガイド分析
-
-### コンテキスト管理（7ツール）
+### コンテキスト管理（4ツール）
 - `create_context_session` - セッション作成
 - `create_context_window` - ウィンドウ作成
 - `add_context_element` - 要素追加
-- `analyze_context` - 品質分析
-- `optimize_context` - 最適化
-- `auto_optimize_context` - 自動最適化
 - `get_context_stats` - 統計取得
 
-### テンプレート管理（4ツール）
+### テンプレート管理（2ツール）
 - `create_prompt_template` - テンプレート作成
-- `generate_prompt_template` - AI生成
 - `list_prompt_templates` - 一覧表示
-- `render_template` - レンダリング
 
 ## 👨‍💻 プロジェクト統合例
 
@@ -178,11 +168,10 @@ cd context-engineering-MCP
 
 # 開発環境セットアップ
 pip install -e ".[dev]"
-cd mcp-server && npm install
 
 # テスト実行
 pytest
-npm test
+python test_pure_mcp.py
 ```
 
 ### パッケージ構造
@@ -192,9 +181,7 @@ context-engineering-MCP/
 ├── context_engineering_mcp/   # Pythonパッケージ
 │   ├── __init__.py
 │   ├── cli.py                # CLIエントリーポイント
-│   └── mcp_server.py         # MCPサーバーラッパー
-├── mcp-server/               # Node.js MCPサーバー
-│   └── context_mcp_server.js
+│   └── pure_mcp_server.py    # 純Python MCPサーバー
 ├── pyproject.toml           # パッケージ設定
 └── README.md
 ```
@@ -210,10 +197,10 @@ export GEMINI_API_KEY="your-actual-key"
 echo "GEMINI_API_KEY=your-actual-key" > .env
 ```
 
-### Node.js エラー
+### Pythonバージョンエラー
 ```bash
-# Node.js 18+が必要
-node --version  # v18.0.0以上を確認
+# Python 3.8+が必要
+python --version  # 3.8.0以上を確認
 ```
 
 ### ポート競合

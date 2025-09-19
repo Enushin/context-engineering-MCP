@@ -8,11 +8,13 @@
 
 Context Engineering MCP is a comprehensive MCP package that revolutionizes AI context management. Install it in any project to add advanced context management capabilities.
 
+**🎆 v2.0 - Pure Python Implementation (No Node.js Required)**
+
 ### Key Features
 
-- **15 MCP Tools**: AI guide management, context optimization, template management
-- **Gemini 2.0 Flash Integration**: Semantic search and analysis
-- **52% Token Reduction**: AI-powered optimization
+- **6 Core MCP Tools**: Context management, template management
+- **Pure Python Implementation**: No Node.js/npm dependencies
+- **Standalone Operation**: No external API dependencies
 - **Project Independent**: Available for any project
 
 ## Installation
@@ -119,26 +121,15 @@ context-engineering-mcp config --output claude_config.json
 
 ## MCP Tool List
 
-### AI Guide Management (4 tools)
-- `list_ai_guides` - Get guide list
-- `search_ai_guides` - Keyword search
-- `search_guides_with_gemini` - AI search
-- `analyze_guide` - Guide analysis
-
-### Context Management (7 tools)
+### Context Management (4 tools)
 - `create_context_session` - Create session
 - `create_context_window` - Create window
 - `add_context_element` - Add element
-- `analyze_context` - Quality analysis
-- `optimize_context` - Optimization
-- `auto_optimize_context` - Auto-optimization
 - `get_context_stats` - Get statistics
 
-### Template Management (4 tools)
+### Template Management (2 tools)
 - `create_prompt_template` - Create template
-- `generate_prompt_template` - AI generation
 - `list_prompt_templates` - List display
-- `render_template` - Rendering
 
 ## 👨‍💻 Project Integration Examples
 
@@ -178,11 +169,10 @@ cd context-engineering-MCP
 
 # Setup development environment
 pip install -e ".[dev]"
-cd mcp-server && npm install
 
 # Run tests
 pytest
-npm test
+python test_pure_mcp.py
 ```
 
 ### Package Structure
@@ -192,9 +182,7 @@ context-engineering-MCP/
 ├── context_engineering_mcp/   # Python package
 │   ├── __init__.py
 │   ├── cli.py                # CLI entry point
-│   └── mcp_server.py         # MCP server wrapper
-├── mcp-server/               # Node.js MCP server
-│   └── context_mcp_server.js
+│   └── pure_mcp_server.py    # Pure Python MCP server
 ├── pyproject.toml           # Package configuration
 └── README.md
 ```
@@ -210,10 +198,10 @@ export GEMINI_API_KEY="your-actual-key"
 echo "GEMINI_API_KEY=your-actual-key" > .env
 ```
 
-### Node.js Error
+### Python Version Error
 ```bash
-# Node.js 18+ required
-node --version  # Check for v18.0.0 or higher
+# Python 3.8+ required
+python --version  # Check for 3.8.0 or higher
 ```
 
 ### Port Conflict
