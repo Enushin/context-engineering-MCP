@@ -34,8 +34,8 @@ context_engineering_mcp_server/
 ### Initial Setup
 ```bash
 # Clone repository
-git clone https://github.com/ShunsukeHayashi/context_-engineering_MCP.git
-cd "context engineering_mcp_server"
+git clone https://github.com/Enushin/context-engineering-MCP.git
+cd context-engineering-MCP
 
 # Configure environment
 cp .env.example .env
