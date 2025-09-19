@@ -29,8 +29,10 @@ def find_mcp_server() -> Optional[Path]:
     """Find the MCP server JavaScript file"""
     package_root = get_package_root()
 
-    # Check multiple possible locations
+    # Check multiple possible locations - prefer standalone version
     possible_paths = [
+        package_root / "mcp-server" / "standalone_mcp_server.js",
+        Path(__file__).parent / "mcp-server" / "standalone_mcp_server.js",
         package_root / "mcp-server" / "context_mcp_server.js",
         package_root / "context_mcp_server.js",
         Path(__file__).parent / "mcp_server" / "context_mcp_server.js",
@@ -58,18 +60,57 @@ def start_mcp_server(project_path: Optional[str] = None, port: Optional[int] = N
 
     logger.info(f"Starting Context Engineering MCP server for project: {project_path}")
 
-    # Load .env file from project directory
+    # Load .env.local or .env file from project directory
+    env_local_file = Path(project_path) / ".env.local"
     env_file = Path(project_path) / ".env"
-    if env_file.exists():
+
+    if env_local_file.exists():
+        logger.info(f"Loading environment from: {env_local_file}")
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(env_local_file)
+        except ImportError:
+            logger.warning("python-dotenv not installed, loading env manually")
+    elif env_file.exists():
         logger.info(f"Loading environment from: {env_file}")
-        from dotenv import load_dotenv
-        load_dotenv(env_file)
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(env_file)
+        except ImportError:
+            logger.warning("python-dotenv not installed, loading env manually")
 
     # Find MCP server file
     mcp_server_path = find_mcp_server()
     if not mcp_server_path:
         logger.error("MCP server file not found. Please ensure the package is properly installed.")
-        sys.exit(1)
+
+        # Try to install npm dependencies if package structure exists
+        mcp_server_dir = get_package_root() / "mcp-server"
+        if mcp_server_dir.exists():
+            logger.info("Attempting to install Node.js dependencies...")
+            try:
+                subprocess.run(
+                    ["npm", "install"],
+                    cwd=str(mcp_server_dir),
+                    check=True,
+                    capture_output=True
+                )
+                # Try finding the server again
+                mcp_server_path = find_mcp_server()
+                if mcp_server_path:
+                    logger.info("Dependencies installed successfully!")
+                else:
+                    logger.error("Dependencies installed but server file still not found")
+                    sys.exit(1)
+            except subprocess.CalledProcessError as e:
+                logger.error(f"Failed to install npm dependencies: {e}")
+                logger.info(f"Try manually running: cd {mcp_server_dir} && npm install")
+                sys.exit(1)
+            except FileNotFoundError:
+                logger.error("npm not found. Please install Node.js and npm first.")
+                sys.exit(1)
+        else:
+            sys.exit(1)
 
     # Set environment variables
     env = os.environ.copy()
@@ -81,19 +122,23 @@ def start_mcp_server(project_path: Optional[str] = None, port: Optional[int] = N
 
     # Check for GEMINI_API_KEY
     if not env.get("GEMINI_API_KEY"):
-        # Try to load from project .env file
-        env_file = Path(project_path) / ".env"
-        if env_file.exists():
-            with open(env_file) as f:
-                for line in f:
-                    if line.startswith("GEMINI_API_KEY="):
-                        key = line.strip().split("=", 1)[1].strip('"').strip("'")
-                        env["GEMINI_API_KEY"] = key
-                        logger.info("GEMINI_API_KEY loaded from .env file")
-                        break
+        # Try to load from project .env.local or .env file
+        for env_file_name in [".env.local", ".env"]:
+            env_file = Path(project_path) / env_file_name
+            if env_file.exists():
+                with open(env_file) as f:
+                    for line in f:
+                        if line.startswith("GEMINI_API_KEY="):
+                            key = line.strip().split("=", 1)[1].strip('"').strip("'")
+                            if key and key != "" and not key.startswith("your-"):
+                                env["GEMINI_API_KEY"] = key
+                                logger.info(f"GEMINI_API_KEY loaded from {env_file_name}")
+                                break
+                if env.get("GEMINI_API_KEY"):
+                    break
 
         if not env.get("GEMINI_API_KEY"):
-            logger.warning("GEMINI_API_KEY not found. Create a .env file with GEMINI_API_KEY=your-key")
+            logger.warning("GEMINI_API_KEY not found. Create a .env.local file with GEMINI_API_KEY=your-key")
             logger.warning("Some features may be limited without the API key.")
 
     # Start Node.js MCP server

@@ -71,13 +71,18 @@ ce-quickstart = "context_engineering_mcp.setup:quickstart"
 [tool.hatch.build]
 packages = ["context_engineering_mcp"]
 include = [
+    "context_engineering_mcp/**/*",
+    "mcp-server/**/*.js",
+    "mcp-server/package.json",
     "main.py",
     "gemini_service.py",
-    "context_engineering/",
-    "mcp-server/",
-    "examples/",
+    "context_engineering/**/*.py",
+    "context_engineering/**/*.txt",
+    "examples/**/*",
     "install.sh",
     ".env.example",
+    "README.md",
+    "LICENSE",
 ]
 exclude = [
     "workflow_system/",
@@ -87,20 +92,27 @@ exclude = [
     "**/*.pyc",
     "**/node_modules",
     "**/.env",
+    "**/.env.local",
     "**/package-lock.json",
 ]
 
 [tool.hatch.build.targets.wheel]
 packages = ["context_engineering_mcp"]
 include = [
-    "context_engineering_mcp",
-    "*.py",
+    "context_engineering_mcp/**/*",
+    "mcp-server/standalone_mcp_server.js",
+    "mcp-server/context_mcp_server.js",
+    "mcp-server/package.json",
+    "main.py",
+    "gemini_service.py",
     "context_engineering/**/*.py",
     "context_engineering/**/*.txt",
-    "context_engineering/**/*.sh",
-    "mcp-server/**/*.js",
-    "mcp-server/**/*.json",
     "examples/**/*",
+]
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/*.pyc",
 ]
 
 [tool.black]

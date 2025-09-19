@@ -19,12 +19,24 @@ def start_mcp_server():
 
     # Find the MCP server JavaScript file
     package_root = Path(__file__).parent.parent
+
+    # Check if we're in a pip-installed package
+    import site
+    site_packages = site.getsitepackages()
+    installed_paths = []
+    for site_pkg in site_packages:
+        installed_paths.extend([
+            Path(site_pkg) / "mcp-server" / "standalone_mcp_server.js",
+            Path(site_pkg) / "mcp-server" / "context_mcp_server.js",
+        ])
+
     mcp_server_paths = [
         # Try standalone version first (no external dependencies)
         package_root / "mcp-server" / "standalone_mcp_server.js",
         package_root / "mcp-server" / "context_mcp_server.js",
-        Path(__file__).parent / "mcp_server" / "context_mcp_server.js",
-    ]
+        Path(__file__).parent / "mcp-server" / "standalone_mcp_server.js",
+        Path(__file__).parent / "mcp-server" / "context_mcp_server.js",
+    ] + installed_paths
 
     mcp_server_path = None
     for path in mcp_server_paths:
@@ -33,8 +45,33 @@ def start_mcp_server():
             break
 
     if not mcp_server_path:
-        logger.error("MCP server file not found")
-        sys.exit(1)
+        logger.error("MCP server file not found. Checking for npm dependencies...")
+
+        # Try to install npm dependencies if missing
+        mcp_server_dir = package_root / "mcp-server"
+        if not mcp_server_dir.exists():
+            mcp_server_dir = Path(__file__).parent / "mcp-server"
+
+        if mcp_server_dir.exists():
+            logger.info(f"Installing npm dependencies in {mcp_server_dir}")
+            try:
+                subprocess.run(
+                    ["npm", "install"],
+                    cwd=mcp_server_dir,
+                    check=True,
+                    capture_output=True
+                )
+                # Try finding the server again
+                for path in mcp_server_paths:
+                    if path.exists():
+                        mcp_server_path = path
+                        break
+            except subprocess.CalledProcessError as e:
+                logger.error(f"Failed to install npm dependencies: {e}")
+
+        if not mcp_server_path:
+            logger.error("MCP server file not found after npm install")
+            sys.exit(1)
 
     # Set up environment
     env = os.environ.copy()
