@@ -3,12 +3,10 @@
 __version__ = "2.0.0"
 __author__ = "Context Engineering Team"
 
-from .api import app
-from .models import ContextWindow, ContextSession, PromptTemplate
+# These modules don't exist in the package structure
+# Removing incorrect imports to fix the package
 
 __all__ = [
-    "app",
-    "ContextWindow",
-    "ContextSession",
-    "PromptTemplate",
+    "__version__",
+    "__author__",
 ]

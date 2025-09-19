@@ -20,6 +20,8 @@ def start_mcp_server():
     # Find the MCP server JavaScript file
     package_root = Path(__file__).parent.parent
     mcp_server_paths = [
+        # Try standalone version first (no external dependencies)
+        package_root / "mcp-server" / "standalone_mcp_server.js",
         package_root / "mcp-server" / "context_mcp_server.js",
         Path(__file__).parent / "mcp_server" / "context_mcp_server.js",
     ]
