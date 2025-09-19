@@ -101,6 +101,7 @@ workflow_system/
 context_engineering/sessions/
 context_engineering/exports/
 context_engineering/templates/*.tmp
+context_engineering/templates/*.json
 context_engineering/*_env/
 
 # =========================

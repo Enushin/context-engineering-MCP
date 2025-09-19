@@ -5,7 +5,17 @@
 echo "🚀 Context Engineering MCP Platform を起動しています..."
 
 # 環境変数の設定
-export GEMINI_API_KEY="AIzaSyC5y-XqtgM73xr761nVAfR2vnmvi0dFIzI"
+# GEMINI_API_KEYを.envファイルから読み込み
+if [ -f .env ]; then
+    export $(cat .env | grep -v '^#' | xargs)
+fi
+
+if [ -z "$GEMINI_API_KEY" ]; then
+    echo "❌ エラー: GEMINI_API_KEYが設定されていません"
+    echo "📝 .envファイルを作成して以下を追加してください:"
+    echo "   GEMINI_API_KEY=your-api-key-here"
+    exit 1
+fi
 
 # AI Guides APIサーバーの起動
 echo "📚 AI Guides API サーバーを起動中..."
